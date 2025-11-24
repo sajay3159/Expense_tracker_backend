@@ -1,67 +1,64 @@
 import Expense from "../models/Expense.js";
 
-// Create a new expense
+// Create Expense
 export const createExpense = async (req, res) => {
+  const { expense, description, category } = req.body;
+  if (!expense || !description || !category) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
   try {
-    const expense = await Expense.create({
-      ...req.body,
+    const newExpense = await Expense.create({
+      expense,
+      description,
+      category,
       user: req.user._id,
     });
-    res.status(201).json(expense);
+    res.status(201).json(newExpense);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// Get all expenses for the logged-in user
+// Get Expenses
 export const getExpenses = async (req, res) => {
   try {
     const expenses = await Expense.find({ user: req.user._id }).sort({
-      date: -1,
+      createdAt: -1,
     });
     res.json(expenses);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// Update a specific expense
+// Update Expense
 export const updateExpense = async (req, res) => {
+  const { expense, description, category } = req.body;
   try {
-    const expense = await Expense.findOneAndUpdate(
+    const updatedExpense = await Expense.findOneAndUpdate(
       { _id: req.params.id, user: req.user._id },
-      req.body,
+      { expense, description, category },
       { new: true }
     );
-
-    if (!expense) {
+    if (!updatedExpense)
       return res.status(404).json({ message: "Expense not found" });
-    }
-
-    res.json(expense);
+    res.json(updatedExpense);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// Delete a specific expense
+// Delete Expense
 export const deleteExpense = async (req, res) => {
   try {
-    const expense = await Expense.findOneAndDelete({
+    const deletedExpense = await Expense.findOneAndDelete({
       _id: req.params.id,
       user: req.user._id,
     });
-
-    if (!expense) {
+    if (!deletedExpense)
       return res.status(404).json({ message: "Expense not found" });
-    }
-
     res.json({ message: "Expense deleted" });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };

@@ -1,14 +1,14 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-const expenseSchema = new Schema(
+const expenseSchema = new mongoose.Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    title: { type: String, required: true },
-    amount: { type: Number, required: true },
+    expense: { type: Number, required: true },
+    description: { type: String, required: true },
     category: { type: String, required: true },
-    date: { type: Date, default: Date.now },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );
 
-export default model("Expense", expenseSchema);
+const Expense = mongoose.model("Expense", expenseSchema);
+export default Expense;
