@@ -34,6 +34,11 @@ export const getExpenses = async (req, res) => {
 // Update Expense
 export const updateExpense = async (req, res) => {
   const { expense, description, category } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ message: "Invalid expense ID" });
+  }
+
   try {
     const updatedExpense = await Expense.findOneAndUpdate(
       { _id: req.params.id, user: req.user._id },
@@ -50,6 +55,10 @@ export const updateExpense = async (req, res) => {
 
 // Delete Expense
 export const deleteExpense = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ message: "Invalid expense ID" });
+  }
+
   try {
     const deletedExpense = await Expense.findOneAndDelete({
       _id: req.params.id,
