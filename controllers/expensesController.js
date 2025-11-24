@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Expense from "../models/Expense.js";
 
 // Create Expense
