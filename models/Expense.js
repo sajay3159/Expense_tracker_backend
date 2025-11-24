@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const expenseSchema = new mongoose.Schema(
+const expenseSchema = new Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     title: { type: String, required: true },
     amount: { type: Number, required: true },
     category: { type: String, required: true },
@@ -11,4 +11,4 @@ const expenseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Expense", expenseSchema);
+export default model("Expense", expenseSchema);

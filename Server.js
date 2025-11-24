@@ -4,16 +4,18 @@ import connectDB from "./config/db.js";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
+import expensesRoutes from "./routes/expenses.js";
 
 connectDB();
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json());
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/expenses", expensesRoutes);
 app.use("/api/users", userRoutes);
 
 // error handler
