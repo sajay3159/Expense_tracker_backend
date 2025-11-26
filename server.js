@@ -10,7 +10,6 @@ connectDB();
 
 const app = express();
 
-// No-cache middleware to prevent 304 Not Modified issues
 app.use((req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
   next();
